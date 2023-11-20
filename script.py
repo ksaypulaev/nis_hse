@@ -30,18 +30,18 @@ try:
     )
     
     MS_2_condition = (
-        (plavki_df['Cr'] + plavki_df['Ni'] + plavki_df['Cu'] < 0.9) & 
-        (plavki_df['S'] < 0.08)
+        (plavki_df['Cr'] + plavki_df['Ni'] + plavki_df['Cu'] <= 0.9) & 
+        (plavki_df['S'] <= 0.08)
     )
 
     MS_3_condition = (
-        (plavki_df['Cr'] + plavki_df['Ni'] + plavki_df['Cu'] < 0.9) & 
-        (plavki_df['Cr'] < 0.25) & 
-        (plavki_df['Ni'] < 0.4) & 
-        (plavki_df['Cu'] < 0.25)
+        (plavki_df['C'] + plavki_df['Si'] + plavki_df['Mn'] <= 0.45) &
+        (plavki_df['C'] <= 0.2) &
+        (plavki_df['Si'] <= 0.1) &
+        (plavki_df['Mn'] <= 0.4)
     )
-    print(f'{MS_1_condition}\n\n{MS_2_condition}')
+    print(f'{MS_1_condition}\n\n{MS_2_condition}\n\n{MS_3_condition}')
 except Exception as ex:
     print(f'An exception occured: {ex}')
 else:
-    print("\nThe program finished successfuly!")
+    print("\n\nThe program finished successfuly!")
