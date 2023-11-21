@@ -22,13 +22,15 @@ try:
     col_Mo_list = plavki_df['Mo'].tolist()
     col_Ca_list = plavki_df['Ca'].tolist()'''
 
+    print(f'\n{ostatki_df}\n')
+
     MS_1_condition = (
         (plavki_df['Cr'] + plavki_df['Ni'] + plavki_df['Cu'] <= 0.9) & 
         (plavki_df['Cr'] <= 0.25) & 
         (plavki_df['Ni'] <= 0.4) & 
         (plavki_df['Cu'] <= 0.25)
     )
-    
+
     MS_2_condition = (
         (plavki_df['Cr'] + plavki_df['Ni'] + plavki_df['Cu'] <= 0.9) & 
         (plavki_df['S'] <= 0.08)
@@ -57,7 +59,7 @@ try:
             print('True!')
         else:
             print('False!')
-    
+
     for ms in MS_3_condition:
         if ms:
             take_lom_2_MS_3 = 60 * 0.55
