@@ -77,6 +77,7 @@ def execute_script():
 
 def update_content():
     execute_script()
+    print("Data updated!")
 
 # Create the main window
 root = tk.Tk()
