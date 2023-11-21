@@ -40,7 +40,33 @@ try:
         (plavki_df['Si'] <= 0.1) &
         (plavki_df['Mn'] <= 0.4)
     )
-    print(f'{MS_1_condition}\n\n{MS_2_condition}\n\n{MS_3_condition}')
+
+    for ms in MS_1_condition:
+        if ms:
+            take_lom_1_MS_1 = 60 * 1
+            take_scrap_MS_1 = 5
+            #print(ostatki_df['лом 1 сорт', 'as_is_ost'] - take_lom_1_MS_1)
+            print('True!')
+        else:
+            print('False!')
+
+    for ms in MS_2_condition:
+        if ms:
+            take_lom_1_MS_2 = 60 * 0.4
+            take_shd_lom_MS_2 = 60 * 0.6
+            print('True!')
+        else:
+            print('False!')
+    
+    for ms in MS_3_condition:
+        if ms:
+            take_lom_2_MS_3 = 60 * 0.55
+            take_chugun_MS_3 = 60 * 0.45
+            print('True!')
+        else:
+            print('False!')
+
+    #print(f'{MS_1_condition}\n\n{MS_2_condition}\n\n{MS_3_condition}')
 except Exception as ex:
     print(f'An exception occured: {ex}')
 else:
