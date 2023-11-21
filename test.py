@@ -6,6 +6,10 @@ def execute_script():
         plavki_df = pd.read_csv('plavki.csv', delimiter=',')
         ostatki_df = pd.read_csv('ostatki.csv', delimiter=',')
 
+        # Convert dataframes to strings
+        plavki_df_str = plavki_df.to_string()
+        ostatki_df_str = ostatki_df.to_string()
+
         MS_1_condition = (
             (plavki_df['Cr'] + plavki_df['Ni'] + plavki_df['Cu'] <= 0.9) & 
             (plavki_df['Cr'] <= 0.25) & 
@@ -24,7 +28,7 @@ def execute_script():
             (plavki_df['Si'] <= 0.1) &
             (plavki_df['Mn'] <= 0.4)
         )
-
+        
         # Create a string to store the output
         output = ""
 
@@ -57,15 +61,22 @@ def execute_script():
             else:
                 #output += 'False!\n'
                 pass
-        
-        plavki_df_str = plavki_df.to_string()
 
-        # Update the label with the output and DataFrame string
-        result_label.config(text=output)
+        # Update the label with the output and DataFrame strings
+        result_label.config(text="Execution successful!")
+        
+        # Clear previous content in the Text widget and insert new data
         text_content.delete(1.0, tk.END)  # Clear previous content
+        text_content.insert(tk.END, "Plavki Data:\n\n")
         text_content.insert(tk.END, plavki_df_str)
+        text_content.insert(tk.END, "\n\nOstatki Data:\n\n")
+        text_content.insert(tk.END, ostatki_df_str)
+        
     except Exception as ex:
         result_label.config(text=f"An exception occurred: {ex}")
+
+def update_content():
+    execute_script()
 
 # Create the main window
 root = tk.Tk()
@@ -75,16 +86,19 @@ root.title("Script GUI")
 root.geometry("1000x450")  # Change width and height as needed
 
 # Button to execute the script
-execute_button = tk.Button(root, text="Execute script", command=execute_script, width=20, height=2)
-execute_button.pack(pady=20)
+update_button = tk.Button(root, text="Update data!", command=update_content, width=20, height=2)
+update_button.pack(pady=20)
 
 # Label to display the script's result
 result_label = tk.Label(root, text="", justify="left", anchor="w", wraplength=480)
 result_label.pack()
 
-# Text widget to display plavki_df_str
+# Text widget to display plavki_df and ostatki_df
 text_content = tk.Text(root, wrap="word")
 text_content.pack(fill="both", expand=True)
+
+# Execute the script automatically when the window is created
+execute_script()
 
 # Run the GUI application
 root.mainloop()

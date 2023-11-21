@@ -75,9 +75,6 @@ def execute_script():
     except Exception as ex:
         result_label.config(text=f"An exception occurred: {ex}")
 
-def update_content():
-    execute_script()
-
 # Create the main window
 root = tk.Tk()
 root.title("Script GUI")
@@ -86,8 +83,8 @@ root.title("Script GUI")
 root.geometry("1000x450")  # Change width and height as needed
 
 # Button to execute the script
-update_button = tk.Button(root, text="Update data!", command=update_content, width=20, height=2)
-update_button.pack(pady=20)
+execute_button = tk.Button(root, text="Execute script", command=execute_script, width=20, height=2)
+execute_button.pack(pady=20)
 
 # Label to display the script's result
 result_label = tk.Label(root, text="", justify="left", anchor="w", wraplength=480)
@@ -96,9 +93,6 @@ result_label.pack()
 # Text widget to display plavki_df and ostatki_df
 text_content = tk.Text(root, wrap="word")
 text_content.pack(fill="both", expand=True)
-
-# Execute the script automatically when the window is created
-execute_script()
 
 # Run the GUI application
 root.mainloop()
