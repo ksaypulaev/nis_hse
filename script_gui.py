@@ -1,15 +1,22 @@
 import tkinter as tk
 import pandas as pd
 
-def execute_script():
-    try:
-        plavki_df = pd.read_csv('plavki.csv', delimiter=',')
-        ostatki_df = pd.read_csv('ostatki.csv', delimiter=',')
 
-        # Convert dataframes to strings
-        plavki_df_str = plavki_df.to_string()
-        ostatki_df_str = ostatki_df.to_string()
+try:
+    plavki_df = pd.read_csv('plavki.csv', delimiter=',')
+    ostatki_df = pd.read_csv('ostatki.csv', delimiter=',')
+    plavki_df_str = plavki_df.to_string()
+    ostatki_df_str = ostatki_df.to_string()
 
+    def read_tables():
+        result_label.config(text="Execution successful!")
+        text_content.delete(1.0, tk.END)  # Clear previous content
+        text_content.insert(tk.END, "Plavki Data:\n\n")
+        text_content.insert(tk.END, plavki_df_str)
+        text_content.insert(tk.END, "\n\nOstatki Data:\n\n")
+        text_content.insert(tk.END, ostatki_df_str)
+
+    def execute_script():
         MS_1_condition = (
             (plavki_df['Cr'] + plavki_df['Ni'] + plavki_df['Cu'] <= 0.9) & 
             (plavki_df['Cr'] <= 0.25) & 
@@ -62,43 +69,48 @@ def execute_script():
                 #output += 'False!\n'
                 pass
 
-        # Update the label with the output and DataFrame strings
-        result_label.config(text="Execution successful!")
-        
-        # Clear previous content in the Text widget and insert new data
-        text_content.delete(1.0, tk.END)  # Clear previous content
-        text_content.insert(tk.END, "Plavki Data:\n\n")
-        text_content.insert(tk.END, plavki_df_str)
-        text_content.insert(tk.END, "\n\nOstatki Data:\n\n")
-        text_content.insert(tk.END, ostatki_df_str)
-        
-    except Exception as ex:
-        result_label.config(text=f"An exception occurred: {ex}")
+        take_total_lom_1 = take_lom_1_MS_1 + take_lom_1_MS_2
+        take_total_lom_2 = take_lom_2_MS_3
+        take_total_shd_lom = take_shd_lom_MS_2
+        take_total_chugun = take_chugun_MS_3
+        text_content.insert(tk.END, '\n\n')
+        text_content.insert(tk.END, f'Итого заказать лома 1 сорта: {take_total_lom_1}')
+        text_content.insert(tk.END, '\n')
+        text_content.insert(tk.END, f'Итого заказать лома 2 сорта: {take_total_lom_2}')
+        text_content.insert(tk.END, '\n')
+        text_content.insert(tk.END, f'Итого заказать легированного лома: {take_total_shd_lom}')
+        text_content.insert(tk.END, '\n')
+        text_content.insert(tk.END, f'Итого заказать чугунного лома: {take_total_chugun}')
+   
+    def reading():
+        read_tables()
+        execute_script()
+        print("Data updated!")
 
-def update_content():
-    execute_script()
+    # Create the main window
+    root = tk.Tk()
+    root.title("Test script GUI")
 
-# Create the main window
-root = tk.Tk()
-root.title("Script GUI")
+    # Set a fixed window size (width x height)
+    root.geometry("1000x450")  # Change width and height as needed
 
-# Set a fixed window size (width x height)
-root.geometry("1000x450")  # Change width and height as needed
+    # Button to execute the script
+    update_button = tk.Button(root, text="Get data!", command=reading, width=20, height=2)
+    update_button.pack(side=tk.TOP, pady=10)
 
-# Button to execute the script
-update_button = tk.Button(root, text="Update data!", command=update_content, width=20, height=2)
-update_button.pack(pady=20)
+    update_button = tk.Button(root, text="Update data!", command=reading, width=20, height=2)
+    update_button.pack(side=tk.TOP, pady=10)
 
-# Label to display the script's result
-result_label = tk.Label(root, text="", justify="left", anchor="w", wraplength=480)
-result_label.pack()
+    # Label to display the script's result
+    result_label = tk.Label(root, text="", justify="left", anchor="w", wraplength=480)
+    result_label.pack()
 
-# Text widget to display plavki_df and ostatki_df
-text_content = tk.Text(root, wrap="word")
-text_content.pack(fill="both", expand=True)
+    # Text widget to display plavki_df and ostatki_df
+    text_content = tk.Text(root, wrap="word")
+    text_content.pack(fill="both", expand=True)
 
-# Execute the script automatically when the window is created
-execute_script()
+except Exception as ex:
+    result_label.config(text=f"An exception occurred: {ex}")
 
 # Run the GUI application
 root.mainloop()
