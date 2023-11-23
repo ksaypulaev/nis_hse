@@ -83,17 +83,31 @@ try:
         take_total_shd_lom = take_shd_lom_MS_2
         take_total_chugun = take_chugun_MS_3
         take_total_scrap = take_scrap_MS_1
+
+        ost_lom_1 = max(0, ostatki_df.loc[ostatki_df['name'] == 'лом 1 сорт', 'as_is_ost'].values[0] - take_total_lom_1)
+        ost_lom_2 = max(0, ostatki_df.loc[ostatki_df['name'] == 'лом 2 сорт', 'as_is_ost'].values[0] - take_total_lom_2)
+        ost_shd_lom = max(0, ostatki_df.loc[ostatki_df['name'] == 'лом легированный', 'as_is_ost'].values[0] - take_total_shd_lom)
+        ost_chugun = max(0, ostatki_df.loc[ostatki_df['name'] == 'чугун', 'as_is_ost'].values[0] - take_total_chugun)
+        ost_scrap = max(0, ostatki_df.loc[ostatki_df['name'] == 'скрап', 'as_is_ost'].values[0] - take_total_scrap)
+
+        additional_lom_1 = abs(min(0, ostatki_df.loc[ostatki_df['name'] == 'лом 1 сорт', 'as_is_ost'].values[0] - take_total_lom_1))
+        additional_lom_2 = abs(min(0, ostatki_df.loc[ostatki_df['name'] == 'лом 2 сорт', 'as_is_ost'].values[0] - take_total_lom_2))
+        additional_shd_lom = abs(min(0, ostatki_df.loc[ostatki_df['name'] == 'лом легированный', 'as_is_ost'].values[0] - take_total_shd_lom))
+        additional_chugun = abs(min(0, ostatki_df.loc[ostatki_df['name'] == 'чугун', 'as_is_ost'].values[0] - take_total_chugun))
+        additional_scrap = abs(min(0, ostatki_df.loc[ostatki_df['name'] == 'скрап', 'as_is_ost'].values[0] - take_total_scrap))
+
+        text_content.insert(tk.END, '\n\n\n')
+        text_content.insert(tk.END, '---------------------------------------------------------------------------------------------------------------------------------------------')
+        text_content.insert(tk.END, f'Итого требуется лома 1 сорта: {take_total_lom_1}, Баланс остатков: {ost_lom_1}, Необходимо дозаказать: {additional_lom_1}')
         text_content.insert(tk.END, '\n\n')
-        text_content.insert(tk.END, f'Итого заказать лома 1 сорта: {take_total_lom_1}')
-        text_content.insert(tk.END, '\n')
-        text_content.insert(tk.END, f'Итого заказать лома 2 сорта: {take_total_lom_2}')
-        text_content.insert(tk.END, '\n')
-        text_content.insert(tk.END, f'Итого заказать легированного лома: {take_total_shd_lom}')
-        text_content.insert(tk.END, '\n')
-        text_content.insert(tk.END, f'Итого заказать чугунного лома: {take_total_chugun}')
-        text_content.insert(tk.END, '\n')
-        text_content.insert(tk.END, f'Итого заказать скрапа: {take_total_scrap}')
-   
+        text_content.insert(tk.END, f'Итого требуется лома 2 сорта: {take_total_lom_2}, Баланс остатков: {ost_lom_2}, Необходимо дозаказать: {additional_lom_2}')
+        text_content.insert(tk.END, '\n\n')
+        text_content.insert(tk.END, f'Итого требуется легированного лома: {take_total_shd_lom}, Баланс остатков: {ost_shd_lom}, Необходимо дозаказать: {additional_shd_lom}')
+        text_content.insert(tk.END, '\n\n')
+        text_content.insert(tk.END, f'Итого требуется чугунного лома: {take_total_chugun}, Баланс остатков: {ost_chugun}, Необходимо дозаказать: {additional_chugun}')
+        text_content.insert(tk.END, '\n\n')
+        text_content.insert(tk.END, f'Итого требуется скрапа: {take_total_scrap}, Баланс остатков: {ost_scrap}, Необходимо дозаказать: {additional_scrap}')
+
     def execute():
         print_tables()
         execute_script()
