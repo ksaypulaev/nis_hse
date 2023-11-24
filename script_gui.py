@@ -3,6 +3,7 @@ import pandas as pd
 
 
 try:
+    # вывод исходных таблиц
     def print_tables():
         plavki_df = pd.read_csv('plavki.csv', delimiter=',')
         ostatki_df = pd.read_csv('ostatki.csv', delimiter=',')
@@ -15,11 +16,14 @@ try:
         text_content.insert(tk.END, "\n\nOstatki Data:\n\n")
         text_content.insert(tk.END, ostatki_df_str)
 
+    # проверка марок стали и расчет/вывод итогового заказа и баланса остатков
     def execute_script():
         plavki_df = pd.read_csv('plavki.csv', delimiter=',')
         ostatki_df = pd.read_csv('ostatki.csv', delimiter=',')
         plavki_df_str = plavki_df.to_string()
         ostatki_df_str = ostatki_df.to_string()
+
+        # условия марок стали
         MS_1_condition = (
             (plavki_df['Cr'] + plavki_df['Ni'] + plavki_df['Cu'] <= 0.9) & 
             (plavki_df['Cr'] <= 0.25) & 
@@ -42,6 +46,7 @@ try:
         # Create a string to store the output
         output = ""
 
+        # расчеты требуемых материалов для каждой марки стали
         ms_1_count = 0
         for ms in MS_1_condition:
             if ms:
@@ -77,25 +82,29 @@ try:
             else:
                 #output += 'False!\n'
                 pass
-
+        
+        # суммирование материалов лома для единого заказа
         take_total_lom_1 = take_lom_1_MS_1 + take_lom_1_MS_2
         take_total_lom_2 = take_lom_2_MS_3
         take_total_shd_lom = take_shd_lom_MS_2
         take_total_chugun = take_chugun_MS_3
         take_total_scrap = take_scrap_MS_1
 
+        # вычитание итогов из остатков 
         ost_lom_1 = max(0, ostatki_df.loc[ostatki_df['name'] == 'лом 1 сорт', 'as_is_ost'].values[0] - take_total_lom_1)
         ost_lom_2 = max(0, ostatki_df.loc[ostatki_df['name'] == 'лом 2 сорт', 'as_is_ost'].values[0] - take_total_lom_2)
         ost_shd_lom = max(0, ostatki_df.loc[ostatki_df['name'] == 'лом легированный', 'as_is_ost'].values[0] - take_total_shd_lom)
         ost_chugun = max(0, ostatki_df.loc[ostatki_df['name'] == 'чугун', 'as_is_ost'].values[0] - take_total_chugun)
         ost_scrap = max(0, ostatki_df.loc[ostatki_df['name'] == 'скрап', 'as_is_ost'].values[0] - take_total_scrap)
 
+        # расчет количества материалов, необходимых для дозаказа после вычета из остатков
         additional_lom_1 = abs(min(0, ostatki_df.loc[ostatki_df['name'] == 'лом 1 сорт', 'as_is_ost'].values[0] - take_total_lom_1))
         additional_lom_2 = abs(min(0, ostatki_df.loc[ostatki_df['name'] == 'лом 2 сорт', 'as_is_ost'].values[0] - take_total_lom_2))
         additional_shd_lom = abs(min(0, ostatki_df.loc[ostatki_df['name'] == 'лом легированный', 'as_is_ost'].values[0] - take_total_shd_lom))
         additional_chugun = abs(min(0, ostatki_df.loc[ostatki_df['name'] == 'чугун', 'as_is_ost'].values[0] - take_total_chugun))
         additional_scrap = abs(min(0, ostatki_df.loc[ostatki_df['name'] == 'скрап', 'as_is_ost'].values[0] - take_total_scrap))
 
+        # вывод данных в GUI приложение
         text_content.insert(tk.END, '\n\n\n')
         text_content.insert(tk.END, '---------------------------------------------------------------------------------------------------------------------------------------------')
         text_content.insert(tk.END, f'Итого требуется лома 1 сорта: {take_total_lom_1}, Баланс остатков: {ost_lom_1}, Необходимо дозаказать: {additional_lom_1}')
@@ -108,6 +117,7 @@ try:
         text_content.insert(tk.END, '\n\n')
         text_content.insert(tk.END, f'Итого требуется скрапа: {take_total_scrap}, Баланс остатков: {ost_scrap}, Необходимо дозаказать: {additional_scrap}')
 
+    # выполнение всех скриптов и вывод лога обновления данных в консоль
     def execute():
         print_tables()
         execute_script()
@@ -135,6 +145,7 @@ try:
     text_content = tk.Text(root, wrap="word")
     text_content.pack(fill="both", expand=True)
 
+# обработка исключений
 except Exception as ex:
     result_label.config(text=f"An exception occurred: {ex}")
 
