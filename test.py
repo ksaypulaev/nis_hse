@@ -134,6 +134,7 @@ try:
     update_button = tk.Button(root, text="Get data!", command=execute, width=20, height=2)
     update_button.pack(side=tk.TOP, pady=10)
 
+    # Button to update the script
     update_button = tk.Button(root, text="Update data!", command=execute, width=20, height=2)
     update_button.pack(side=tk.TOP, pady=10)
 
