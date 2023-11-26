@@ -176,4 +176,4 @@ except Exception as ex:
     result_label.config(text=f"An exception occurred: {ex}")
 
 # Run the GUI application
-root.mainloop()
+root.mainloop() 
