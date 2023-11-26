@@ -28,28 +28,28 @@ try:
             plavki_df = pd.read_csv('plavki.csv', delimiter=',')
             ostatki_df = pd.read_csv('ostatki.csv', delimiter=',')
             group_count += 1
-            group = plavki_df.iloc[i:i+3]
+            group_df = plavki_df.iloc[i:i+3]
             text_content.insert(tk.END, f'\n\nГруппа № {group_count}:\n\n')
-            text_content.insert(tk.END, group)
+            text_content.insert(tk.END, group_df)
 
             # условия марок стали
             MS_1_condition = (
-                (plavki_df['Cr'] + plavki_df['Ni'] + plavki_df['Cu'] <= 0.9) & 
-                (plavki_df['Cr'] <= 0.25) & 
-                (plavki_df['Ni'] <= 0.4) & 
-                (plavki_df['Cu'] <= 0.25)
+                (group_df['Cr'] + group_df['Ni'] + group_df['Cu'] <= 0.9) & 
+                (group_df['Cr'] <= 0.25) & 
+                (group_df['Ni'] <= 0.4) & 
+                (group_df['Cu'] <= 0.25)
             )
 
             MS_2_condition = (
-                (plavki_df['Cr'] + plavki_df['Ni'] + plavki_df['Cu'] <= 0.95) & 
-                (plavki_df['S'] <= 0.08)
+                (group_df['Cr'] + group_df['Ni'] + group_df['Cu'] <= 0.95) & 
+                (group_df['S'] <= 0.08)
             )
 
             MS_3_condition = (
-                (plavki_df['C'] + plavki_df['Si'] + plavki_df['Mn'] <= 0.45) &
-                (plavki_df['C'] <= 0.2) &
-                (plavki_df['Si'] <= 0.1) &
-                (plavki_df['Mn'] <= 0.4)
+                (group_df['C'] + group_df['Si'] + group_df['Mn'] <= 0.45) &
+                (group_df['C'] <= 0.2) &
+                (group_df['Si'] <= 0.1) &
+                (group_df['Mn'] <= 0.4)
             )
             
             # Create a string to store the output
@@ -57,6 +57,13 @@ try:
 
             # расчеты требуемых материалов для каждой марки стали
             ms_1_count = 0
+            take_lom_1_MS_1 = 0
+            take_lom_1_MS_2 = 0 
+            take_lom_2_MS_3 = 0
+            take_shd_lom_MS_2 = 0
+            take_chugun_MS_3 = 0
+            take_scrap_MS_1 = 0
+
             for ms in MS_1_condition:
                 if ms:
                     ms_1_count += 1
@@ -137,6 +144,7 @@ try:
     # выполнение всех скриптов и вывод лога обновления данных в консоль
     def execute():
         #print_tables()
+        text_content.delete(1.0, tk.END)
         execute_script()
         print("Data updated!")
 
